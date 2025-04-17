@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Card from "./Card";
 
 function CreatePage() {
   const [data, setData] = useState([])
@@ -18,11 +19,8 @@ function CreatePage() {
     })
     const data = await response.json()
     if(response.ok){
-      const dataImg = data.map(product => ({
-        ...product,
-        imageName: `product${product.id_product}.jpg`
-      }));
-      setData(dataImg)
+
+      setData(data)
     } else {
       console.log(data.message);
     }
@@ -74,15 +72,9 @@ function CreatePage() {
         <button onClick={createOrder}>Создать</button>
         <button onClick={handleDel}>Очистить</button>
         <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '15px'}}>
-          {data.map((product) => (
-            <div key={product.id_product} style={{border: '1px solid black', padding: '20px', borderRadius: '10px'}}>
-              <img src={`/images/${product.imageName}`} alt={product.name} style={{width: '150px', height: '150px'}} />
-              <h3>{product.name}</h3>
-              <p>{product.description}</p>
-              <p>{product.price}</p>
-              <button onClick={()=> handleAdd(product)}>Добавить</button>
-            </div>
-          ))}
+        {data.map(product => (
+          <Card key={product.id_product} product={product} handleAdd={handleAdd} />
+        ))}
         </div>
       </div>
     </>
